@@ -1,0 +1,43 @@
+.studio-tools-sidebar {
+  max-width: 100px;
+  height: 100vh;
+  box-shadow: 0px 1px 11px #8a838370;
+  text-align: center;
+  position: relative;
+}
+.studio-tools .tool svg {
+  max-width: 25px;
+}
+.studio-tools-sidebar .logo img {
+  max-width: 100%;
+  max-width: 50px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.studio-tools-sidebar .logo {
+  padding-top: 15px;
+  padding-bottom: 25px;
+}
+.studio-tools .tool {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: block;
+  cursor: pointer;
+}
+.studio-tools .tool .text {
+  font-size: 12px;
+  margin-top: 5px;
+}
+.studio-tools .tool.active {
+  color: #fff;
+  font-weight: 700;
+  background-color: #27a6ff;
+  box-shadow: 0 2px 8px 0 rgb(39 166 255 / 50%);
+}
+.studio-tools .tool.active svg {
+  fill: #fff;
+}
+.studio-tools .tool svg {
+  margin-left: auto;
+  margin-right: auto;
+}
