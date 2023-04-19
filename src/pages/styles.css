@@ -59,7 +59,7 @@
 }
 
 .linkToPick {
-    color: rgb(36, 153, 235);
+    color: #fb5656;
     text-decoration: none;
 }
 
@@ -152,6 +152,7 @@ img {
     width: 100px;
     height: 100px;
     top: 0px;
+    background-color: #ee5050;
 }
 
 .footer-link {
@@ -300,7 +301,7 @@ img {
 
 .design-button {
     color: #ffffff;
-    border: 2px solid #27a6ff;
+    border: 2px solid #ee5050;
     cursor: pointer;
     display: inline-block;
     padding: 0.75rem 3rem;
@@ -310,8 +311,8 @@ img {
     line-height: 30px;
     border-radius: 999px;
     text-transform: uppercase;
-    background-color: #27a6ff;
-    border-color: #27a6ff;
+    background-color: #ee5050;
+    border-color: #ee5050;
     text-decoration-thickness: initial;
     width: max-content;
     height: max-content;
@@ -326,8 +327,8 @@ img {
 }
 
 .design-button:hover {
-    border-color: rgb(36, 153, 235);
-    background-color: rgb(36, 153, 235);
+    border-color: #fb5656;
+    background-color: #fb5656;
 }
 
 .delivery-heading {
@@ -348,7 +349,7 @@ img {
 .seperator {
     width: 1px;
     height: 55px;
-    background-color: #27a6ff;
+    background-color: #ee5050;
     margin: 0px 24px;
 }
 
@@ -631,7 +632,7 @@ img {
 }
 
 .inner-deserve-box {
-    border-top: 8px solid #27a6ff;
+    border-top: 8px solid #ee5050;
     box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
     border-radius: 0.25rem;
     background-color: #ffffff;
@@ -932,7 +933,7 @@ img {
 }
 
 .outer-colors:hover {
-    border: 2px solid #27a6ff;
+    border: 2px solid #ee5050;
     position: relative;
     border-radius: 20px;
     box-sizing: border-box;
@@ -1011,7 +1012,7 @@ img {
 }
 
 .select-feature {
-    color: #27a6ff;
+    color: #ee5050;
     font-size: 1.25rem;
     font-weight: 700;
 }
@@ -1027,8 +1028,8 @@ img {
 }
 
 .border-button {
-    color: #27a6ff;
-    border: 2px solid #27a6ff;
+    color: #ee5050;
+    border: 2px solid #ee5050;
     margin: 0 auto 3rem;
     display: block;
     padding: 0.5rem 1.5rem 0.5rem;
@@ -1049,8 +1050,8 @@ img {
 
 .border-button:hover {
     color: #ffffff;
-    border-color: #27a6ff;
-    background-color: #27a6ff;
+    border-color: #ee5050;
+    background-color: #ee5050;
 }
 
 .design-page-category-section {
@@ -1143,6 +1144,28 @@ img {
 .faq-section {
     align-items: start;
 }
+.color-panel-options{
+    position: relative;
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+}
+
+.hover-border {
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 50%;
+}
+.hover-border:hover{
+    padding: 1px;
+    border: 1px solid #ee5050;
+    border-radius: 50%;
+}
 
 /* 
 .accordion {
@@ -1186,7 +1209,7 @@ img {
 
 .active,
 .accordion:hover {
-    color: #27a6ff;
+    color: #ee5050;
     cursor: pointer;
 } */
 /* .accordion_item.active button {

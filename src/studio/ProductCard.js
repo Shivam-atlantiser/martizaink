@@ -13,7 +13,7 @@ function ProductCard() {
 
     const [defaultColor, setDefaultColor] = useState(null);
 
-    const storeData = useSelector((state) => state.allProducts);
+    const storeData = useSelector((state) => state.AllData);
 
     const dispatch = useDispatch();
 
@@ -47,14 +47,14 @@ function ProductCard() {
                         <div>
                             <div className='product-image-c'>
                                 <div className="product-image">
-                                    {/* {
+                                    {
                                         storeData.selectedProductId === undefined ?
                                             <img alt='' src="./tee.jpeg" />
                                             :
                                             storeData?.products?.map((key, index) => key.product_Id === storeData.selectedProductId &&
                                                 <img src={key.image} alt="canvas tshirt" key={index} />
                                             )
-                                    } */}
+                                    }
                                 </div>
                                 <div className="product-color">
                                     {defaultColor}

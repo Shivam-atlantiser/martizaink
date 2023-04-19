@@ -6,16 +6,22 @@ import './styles.css';
 function SingleProduct() {
     const [defaultColor, setDefaultColor] = useState(null);
 
-    const products = useSelector((state) => state.allProducts.products);
+    const storeData = useSelector((state) => state.AllData);
+    const products = storeData.products;
 
     const dispatch = useDispatch();
 
     const handleSelectProduct = (data) => {
-        dispatch(selectedProduct(data))
+        let product = {
+            product_Id: data?.product_Id !== undefined ? data.product_Id : undefined,
+            name: data?.name !== undefined ? data.name : undefined,
+            style: data?.style !== undefined ? data.style : undefined,
+            image: data.image,
+        }
+        dispatch(selectedProduct(product))
     }
 
     const handleColor = (key) => {
-        
         dispatch(selectedProductColor(key))
         setDefaultColor(key)
     }
@@ -24,7 +30,7 @@ function SingleProduct() {
         <>{
             products && products.map((product, index) => {
                 return (
-                    <button className='product-box' onClick={(e) => handleSelectProduct(product.product_Id)} key={index}>
+                    <button className='product-box' onClick={(e) => handleSelectProduct(product)} key={index}>
                         <p className='custom-product-title'>{product.name}</p>
                         <img className='product-section-image' src={product.image} alt='product' />
                         <div className='select-color-heading'>

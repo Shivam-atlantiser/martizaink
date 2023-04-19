@@ -1,5 +1,5 @@
 :root {
-  --primary-color: #27a6ff;
+  --primary-color: #ee5050;
 }
 
 .menu-edits {
@@ -235,7 +235,7 @@
     top: 0;
     margin-left: 5px;
     font-size: 10px;
-    color: #27a6ff;
+    color: #ee5050;
     position: relative;
     top: 1px;
     display: inline;
@@ -354,9 +354,9 @@ p {
 }
 
 .button:hover {
-  border-color: #008ff3;
-  box-shadow: 0 2px 8px 0 rgba(39, 166, 255, .5);
-  background-color: #0196ff;
+  border-color: #f31000;
+  box-shadow: 0 2px 8px 0 rgba(255, 57, 39, 0.5);
+  background-color: #ff2701;
 }
 
 .button {
@@ -364,13 +364,13 @@ p {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #27a6ff;
+  background-color: #ee5050;
   height: 42px;
   padding: 0 25px;
   color: #fff !important;
   white-space: nowrap;
   outline: 0;
-  border: 1px solid #27a6ff;
+  border: 1px solid #ee5050;
   border-radius: 999px;
   box-shadow: none;
   user-select: none;
@@ -403,7 +403,7 @@ p {
   width: 100%;
   padding: 5px;
   margin: 2px;
-  border: 1px solid #008ff3;
+  border: 1px solid #f34500;
   border-radius: 5px;
 }
 
@@ -494,8 +494,8 @@ p {
     -ms-user-select: none;
     user-select: none;
     color: #fff;
-    background-color: #27a6ff;
-    border-color: #0d9bff;
+    background-color: #ee5050;
+    border-color: #ff390d;
     height: 36px;
     position: relative;
     border-bottom-left-radius: 0;
@@ -559,4 +559,26 @@ p {
   justify-content: center;
   margin-top: 10px;
   padding: 10px 0px;
+}
+.font-view-panel{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0px;
+}
+.font-view-panel:hover{
+  background-color: #eee;
+}
+
+.font-image-dynamic{
+    padding-bottom: 10px;
+    max-width: 180px;
+}
+.canvas-text-input{
+  width: 100%;
+  border: 1px dotted grey;
+  background-color: #ffffff00;
+  text-align: center;
 }

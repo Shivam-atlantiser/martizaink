@@ -69,7 +69,7 @@ function FrontPage() {
                 <div className='seperator' />
                 <div className='delivery-options'>
                   <p className='delivery-heading'>
-                    Rush Delivery
+                    Delivery
                   </p>
                   <p className='delivery-sub-heading'>
                     Guaranteed by Mon Apr 3
@@ -267,8 +267,8 @@ function FrontPage() {
           <div className='deserve-container'>
             <div className='deserve-content'>
               <img className='svg-style' src={delivery} alt='icon' />
-              <p className='delivery-title'>FAST RUSH DELIVERY</p>
-              <p className='delivery-description'>Rush deliveries are our speciality, and we never take an order unless we are 100% sure that we can guarantee your deadline.</p>
+              <p className='delivery-title'>FAST DELIVERY</p>
+              <p className='delivery-description'>deliveries are our speciality, and we never take an order unless we are 100% sure that we can guarantee your deadline.</p>
             </div>
             <div className='deserve-content'>
               <img className='svg-style' src={industry} alt='icon' />

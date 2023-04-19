@@ -3,7 +3,7 @@ import dropdownTshirt from './assets/ZoomImage.jpg'
 export const options = [
     {
         img: dropdownTshirt,
-        name: "RushOrderTees Classic Tee",
+        name: "Martizaink Classic Tee",
         benifit: "Most Popular"
     },
     {
@@ -26,7 +26,7 @@ export const faqs = [
     {
         question: "How can I design my own t-shirt?",
         answer:
-            "Making your own t-shirt is easy at RushOrderTees. Our online Design Studio puts creativity at your fingertips; upload your artwork or use the library of fonts, clipart, and design templates. No matter how you do it, designing t-shirts will be fun."
+            "Making your own t-shirt is easy at Martizaink. Our online Design Studio puts creativity at your fingertips; upload your artwork or use the library of fonts, clipart, and design templates. No matter how you do it, designing t-shirts will be fun."
     },
     {
         question: "What customization options do you offer?",

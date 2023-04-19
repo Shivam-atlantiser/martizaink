@@ -91,7 +91,7 @@ function DesignTshirt() {
                                             <img src={key.img} alt='design tshirt' className='dropdown-image' />
                                             <div className='flex flex-col justify-center items-start ml-2'>
                                                 <p className='name-select'>
-                                                    {dropValue !== null ? dropValue.name : "RushOrderTees Classic Tee"}
+                                                    {dropValue !== null ? dropValue.name : "Martizaink Classic Tee"}
                                                 </p>
                                                 <p className='select-feature'>
                                                     {dropValue !== null ? dropValue.benifit : "Most Popular"}
@@ -135,7 +135,7 @@ function DesignTshirt() {
                         <Link to={'/design-studio'} className="nav-link">Start Designing</Link>
                         <img className="design-arrow" src={forward} alt='forward icon' />
                     </button>
-                    <p className='design-page-description'>Creating your own t-shirt design at RushOrderTees is simple. Start with a t-shirt from our broad inventory and quickly personalize it using our intuitive Design Studio. Upload your artwork or use our free clipart, fonts, and design templates to make your own shirt in no time.</p>
+                    <p className='design-page-description'>Creating your own t-shirt design at Martizaink is simple. Start with a t-shirt from our broad inventory and quickly personalize it using our intuitive Design Studio. Upload your artwork or use our free clipart, fonts, and design templates to make your own shirt in no time.</p>
                 </div>
             </div>
         </div>
@@ -203,14 +203,14 @@ function DesignTshirt() {
         <div className='deserve-section deserve-border-rm'>
             <div className='inner-deserve-box'>
                 <div className='heading-box'>
-                    <h1 className='category-heading'>The RushOrderTees Difference</h1>
+                    <h1 className='category-heading'>The Martizaink Difference</h1>
                     <span className='sub-heading our-difference'>We're a team of 300+ printing experts focused on creating amazing custom products for you</span>
                 </div>
                 <div className='deserve-container'>
                     <div className='deserve-content'>
                         <img className='svg-style' src={delivery} alt='icon' />
-                        <p className='delivery-title'>FAST RUSH DELIVERY</p>
-                        <p className='delivery-description'>Rush deliveries are our speciality, and we never take an order unless we are 100% sure that we can guarantee your deadline.</p>
+                        <p className='delivery-title'>FAST DELIVERY</p>
+                        <p className='delivery-description'>deliveries are our speciality, and we never take an order unless we are 100% sure that we can guarantee your deadline.</p>
                     </div>
                     <div className='deserve-content'>
                         <img className='svg-style' src={industry} alt='icon' />

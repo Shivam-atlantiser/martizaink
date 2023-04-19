@@ -18,7 +18,7 @@
   cursor: pointer;
 }
 .close:hover{
-  background-color: #27a6ff;
+  background-color: #ee5050;
 }
 .product-cross-svg{
   margin: 20px 0px;
@@ -173,7 +173,7 @@
 }
 
 .outer-colors:hover {
-  border: 2px solid #27a6ff;
+  border: 2px solid #ee5050;
   position: relative;
   border-radius: 20px;
   box-sizing: border-box;
@@ -182,7 +182,7 @@
 .change-color-heading {
   padding: 5px;
   font-size: 22px;
-  color: #27a6ff;
+  color: #ee5050;
   font-family: "ProximaSoft", sans-serif;
 }
 

@@ -1,6 +1,10 @@
 import { ActionTypes } from './../constants/actionTypes';
 import cottonTshirt from "../../pages/assets/Next Level Cotton Blend T-Shirt.jpg"
 import crenwneckTshirt from '../../pages/assets/Next Level Apparel Crewneck T-Shirt.jpg'
+import adobeGrade from '../../pages/assets/adobe grade.png';
+import alpha from '../../pages/assets/alpha.png';
+import bladeRunner from '../../pages/assets/Blade Runner.png';
+import fontStyle from "../../pages/assets/fonts/stylesheet.css"
 
 const initialState = {
     products: [
@@ -30,7 +34,57 @@ const initialState = {
             ],
             image: crenwneckTshirt
         },
-    ]
+    ],
+    fonts: [
+        {
+            fontFamily: 'Adobe Garamond Pro',
+            fontImage: adobeGrade,
+            link: fontStyle
+        },
+        {
+            fontFamily: 'Alpha Slab One',
+            fontImage: alpha,
+            link: fontStyle
+        },
+        {
+            fontFamily: 'Blade Runner Movie Font',
+            fontImage: bladeRunner,
+            link: fontStyle
+        },
+    ],
+    styles: {
+        "colors": [
+            "rgb(51, 89, 148)",
+            "rgb(32, 65, 154)",
+            "rgb(216, 236, 242)",
+            "rgb(35, 153, 82)",
+            "rgb(236, 184, 46)",
+            "rgb(255, 255, 255)",
+            "rgb(173, 176, 193)",
+            "rgb(0, 0, 0)",
+            "rgb(239, 128, 67)",
+            "rgb(207, 196, 190)",
+        ]
+        ,
+        "outline": {
+            "sizes": [
+                "1px", "2px", "3px", "4px", "5px", "6px", "7px", "8px", "9px", "10px", "11px", "12px", "13px", "14px", "15px", "16px", "17px", "18px", "19px", "20px"
+            ],
+            "colors": [
+                "unset",
+                "rgb(51, 89, 148)",
+                "rgb(32, 65, 154)",
+                "rgb(216, 236, 242)",
+                "rgb(35, 153, 82)",
+                "rgb(236, 184, 46)",
+                "rgb(255, 255, 255)",
+                "rgb(173, 176, 193)",
+                "rgb(0, 0, 0)",
+                "rgb(239, 128, 67)",
+                "rgb(207, 196, 190)",
+            ]
+        }
+    }
 };
 
 
@@ -38,11 +92,16 @@ export const productReducer = (state = initialState, { type, payload }) => {
     switch (type) {
         case ActionTypes.SET_PRODUCTS:
             return { ...state, products: payload };
+        case ActionTypes.SELECTED_INPUT_FILE:
+            return { ...state, selectedInputFile: payload };
         case ActionTypes.SELECTED_PRODUCT:
-            return { ...state, selectedProductId: payload };
+            return { ...state, selectedProduct: payload };
         case ActionTypes.SELECTED_PRODUCT_COLOR:
             return { ...state, selectedProductColor: payload };
+        case ActionTypes.SELECTED_DESIGN:
+            return { ...state, selectedDesign: payload };
         default:
             return state;
+
     }
 };

@@ -1,6 +1,5 @@
 import React from 'react'
 import '../pages/styles.css'
-import rush from '../pages/assets/rush.avif'
 import fb from '../pages/assets/fb.avif'
 import insta from '../pages/assets/insta.avif'
 import linkedin from '../pages/assets/linkedin.avif'
@@ -14,7 +13,7 @@ function Footer() {
     return (
         <div className='footer'>
             <div className='footer-seperator' />
-            <img src={rush} alt='' className='footer-logo' />
+            <div className='footer-logo' />
             <div className='inner-footer'>
                 <div className='footer-links'>
                     <a className='footer-heading' href='/'>Products</a>
@@ -81,7 +80,7 @@ function Footer() {
             <div className='copyright'>
                 <img src={stamp} alt='footer-stamp' className='footer-stamp' />
                 <p>
-                    © Copyright 2023 RushOrderTees. All rights reserved.
+                    © Copyright 2023 Martizaink. All rights reserved.
                 </p>
             </div>
         </div>

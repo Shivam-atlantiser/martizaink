@@ -7,10 +7,10 @@ export const setProducts = (products) => {
     };
 };
 
-export const selectedProduct = (productId) => {
+export const selectedProduct = (product) => {
     return {
         type: ActionTypes.SELECTED_PRODUCT,
-        payload: productId,
+        payload: product,
     };
 };
 
@@ -20,3 +20,16 @@ export const selectedProductColor = (color) => {
         payload: color,
     };
 };
+export const selectedDesign = (design) => {
+    return {
+        type: ActionTypes.SELECTED_DESIGN,
+        payload: design,
+    };
+}; 
+
+export const selectedInputFile = (file) => {
+    return {
+        type: ActionTypes.SELECTED_INPUT_FILE,
+        payload: file,
+    };
+}; 

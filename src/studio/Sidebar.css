@@ -31,8 +31,8 @@
 .studio-tools .tool.active {
   color: #fff;
   font-weight: 700;
-  background-color: #27a6ff;
-  box-shadow: 0 2px 8px 0 rgb(39 166 255 / 50%);
+  background-color: #ee5050;
+  box-shadow: 0 2px 8px 0 rgba(255, 68, 39, 0.5);
 }
 .studio-tools .tool.active svg {
   fill: #fff;
