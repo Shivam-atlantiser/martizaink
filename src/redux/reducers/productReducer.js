@@ -37,17 +37,17 @@ const initialState = {
     ],
     fonts: [
         {
-            fontFamily: 'Adobe Garamond Pro',
+            fontFamily: 'Adobe',
             fontImage: adobeGrade,
             link: fontStyle
         },
         {
-            fontFamily: 'Alpha Slab One',
+            fontFamily: 'Alpha',
             fontImage: alpha,
             link: fontStyle
         },
         {
-            fontFamily: 'Blade Runner Movie Font',
+            fontFamily: 'Blade Runner',
             fontImage: bladeRunner,
             link: fontStyle
         },
@@ -100,8 +100,19 @@ export const productReducer = (state = initialState, { type, payload }) => {
             return { ...state, selectedProductColor: payload };
         case ActionTypes.SELECTED_DESIGN:
             return { ...state, selectedDesign: payload };
+        case ActionTypes.DESIGNID:
+            return { ...state, selectedDesignId: payload };
+        case ActionTypes.TEXTFOCUS:
+            return { ...state, textFocus: payload };
+        case ActionTypes.ALLDESIGNS:
+            return { ...state, selectedDesigns: payload };
+        case ActionTypes.DRAGGED:
+            return { ...state, dragged: payload };
+        case ActionTypes.REVERSETEXT:
+            return { ...state, reverseText: payload };
+        case ActionTypes.FLIPTEXT:
+            return { ...state, flipText: payload };
         default:
             return state;
-
     }
 };

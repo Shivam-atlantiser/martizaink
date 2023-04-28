@@ -25,7 +25,7 @@
   padding-right: 20px;
   position: relative;
   display: flex;
-  justify-content: end;
+  justify-content:flex-end;
 }
 .product-card {
   border: 1px solid #e3e7eb;

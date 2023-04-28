@@ -1,14 +1,14 @@
-@font-face {font-family: 'Blade Runner Movie Font';
+@font-face {font-family: 'Blade Runner';
 	font-style: normal;
 	font-weight: normal;
 	src: url(./blade_runner_movie_font.ttf) format('truetype');
 }
-@font-face {font-family: 'Adobe Garamond Pro';
+@font-face {font-family: 'Adobe';
 	font-style: normal;
 	font-weight: normal;
 	src: url(./adobe_garamond_pro.ttf) format('truetype'),
 }
-@font-face {font-family: 'Alpha Slab One';
+@font-face {font-family: 'Alpha';
 	font-style: normal;
 	font-weight: normal;
 	src: url(./AlfaSlabOne-Regular.ttf) format('truetype');

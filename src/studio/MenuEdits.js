@@ -27,10 +27,10 @@ const MenuEdits = ({ active }) => {
         const url = URL.createObjectURL(file);
         setFileUrl(url);
     };
-    
+
     useEffect(() => {
         dispatch(selectedInputFile(fileUrl))
-    }, [fileUrl]);
+    }, [fileUrl, dispatch]);
 
 
     return (

@@ -32,16 +32,19 @@
   border-bottom: 1px solid #8d9095;
   margin-bottom: 20px;
 }
-.second-heading{
+
+.second-heading {
   display: flex;
   width: 100%;
   align-items: center;
   justify-content: space-between;
 }
-.cross{
+
+.cross {
   height: 12px;
   width: 12px;
 }
+
 .add-products {
   border: 1px dashed #8d9095;
   padding: 15px;
@@ -121,6 +124,8 @@
 
 .buttons .btn-g {
   display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .buttons .btn-g .btn-c:nth-child(1) .btn {
@@ -133,6 +138,17 @@
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
+.btn-text{
+  text-align: center;
+  font-size: 10px;
+  max-width: max-content;
+  font-weight: 600;
+}
+
+.btn-combine{
+  display: flex;
+}
+
 
 .text-form {
   display: -webkit-box;
@@ -194,6 +210,7 @@
   -ms-flex-align: center;
   align-items: center;
 }
+
 .select-color-1 {
   position: relative;
   margin-left: 5px;
@@ -203,8 +220,8 @@
   border-radius: 100%;
   -webkit-transition: -webkit-transform .15s linear;
   transition: transform .15s linear;
-  background-color:black;
 }
+
 .select-color-2 {
   position: relative;
   margin-left: 5px;
@@ -216,7 +233,8 @@
   transition: transform .15s linear;
   background-color: #fff;
 }
-.select-color-2::before{
+
+.select-color-2::before {
   content: '';
   position: absolute;
   top: 50%;
@@ -226,32 +244,36 @@
   transform: translateY(-50%) rotate(-45deg);
   background-color: #ed4040;
 }
-.font-styles{
+
+.font-styles {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.forward-icon{
-    top: 0;
-    margin-left: 5px;
-    font-size: 10px;
-    color: #ee5050;
-    position: relative;
-    top: 1px;
-    display: inline;
-    font-family: 'Glyphicons Halflings';
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    height: 13px;
-    width: 13px;
+
+.forward-icon {
+  top: 0;
+  margin-left: 5px;
+  font-size: 10px;
+  color: #ee5050;
+  position: relative;
+  top: 1px;
+  display: inline;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  height: 13px;
+  width: 13px;
 }
+
 .box {
   border-radius: 3px;
   overflow: hidden;
   margin-bottom: 10px;
 }
+
 .tab-list {
   margin: 0;
   padding: 0;
@@ -376,7 +398,8 @@ p {
   user-select: none;
   width: 100%;
 }
-.choose-btn{
+
+.choose-btn {
   max-width: 50%;
 }
 
@@ -476,32 +499,32 @@ p {
 }
 
 .input-btn {
-    margin-bottom: 0;
-    font-weight: 400;
-    text-align: center;
-    vertical-align: middle;
-    touch-action: manipulation;
-    cursor: pointer;
-    background-image: none;
-    border: 1px solid transparent;
-    white-space: nowrap;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    border-radius: 4px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    color: #fff;
-    background-color: #ee5050;
-    border-color: #ff390d;
-    height: 36px;
-    position: relative;
-    border-bottom-left-radius: 0;
-    border-top-left-radius: 0;
-    z-index: 2;
-    width: auto;
+  margin-bottom: 0;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #fff;
+  background-color: #ee5050;
+  border-color: #ff390d;
+  height: 36px;
+  position: relative;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  z-index: 2;
+  width: auto;
 }
 
 .art-btn-container {
@@ -549,10 +572,12 @@ p {
   width: 25px;
   height: 25px;
 }
+
 .btn-label {
   padding-left: 15px;
 }
-.number-button{
+
+.number-button {
   width: 100%;
   border-top: 1px solid #8d9095;
   display: flex;
@@ -560,7 +585,8 @@ p {
   margin-top: 10px;
   padding: 10px 0px;
 }
-.font-view-panel{
+
+.font-view-panel {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -568,17 +594,20 @@ p {
   justify-content: center;
   padding: 20px 0px;
 }
-.font-view-panel:hover{
+
+.font-view-panel:hover {
   background-color: #eee;
 }
 
-.font-image-dynamic{
-    padding-bottom: 10px;
-    max-width: 180px;
+.font-image-dynamic {
+  padding-bottom: 10px;
+  max-width: 180px;
 }
-.canvas-text-input{
-  width: 100%;
+
+.canvas-text-input {
   border: 1px dotted grey;
   background-color: #ffffff00;
   text-align: center;
+  max-height: 100%;
+  max-width: 100%;
 }
