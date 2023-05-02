@@ -877,6 +877,7 @@ img {
 }
 
 .design-heading {
+    margin-top: 100px;
     font-family: "ProximaSoft", sans-serif;
     line-height: 1.2;
     font-size: 3rem;

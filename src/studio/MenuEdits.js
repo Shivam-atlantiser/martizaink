@@ -8,15 +8,35 @@ import numberImage from './snippets/numbers.jpg';
 import { Link } from 'react-router-dom';
 import './menuEdits.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectedInputFile } from './../redux/actions/productActions';
+import { imageClip, selectedInputFile } from './../redux/actions/productActions';
+import axios from 'axios';
+import DesignWizard from './../pages/DesignWizard';
 
 
-const MenuEdits = ({ active }) => {
+const MenuEdits = ({ active, handler }) => {
+    const dispatch = useDispatch();
     const [selectedFile, setSelectedFile] = useState(null);
     const storeData = useSelector((state) => state.allProducts);
     const [fileUrl, setFileUrl] = useState('');
+    const [clipsCat, setClipsCat] = useState('');
+    const [clip, setClip] = useState('');
+    const [individualClip, setIndividualClip] = useState('');
+    const [indiClip, setIndiClip] = useState(undefined);
+    const [singleClip, setSingleClip] = useState('')
+    const [designWizardActive, setDesignWizardActive] = useState(true)
+    const [numbers, setNumbers] = useState(false)
 
-    const dispatch = useDispatch();
+
+    const handlePopupClose = () => {
+        setDesignWizardActive(false);
+    };
+
+    useEffect(() => {
+        if (designWizardActive === false) {
+            handler("NameNumber");
+        }
+        setDesignWizardActive(true)
+    }, [designWizardActive])
 
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
@@ -28,9 +48,68 @@ const MenuEdits = ({ active }) => {
         setFileUrl(url);
     };
 
+    const handleClipart = (data) => {
+        setClipsCat(data.name)
+    }
+
+    const handleIndividualClip = (data) => {
+        setIndividualClip(data.name);
+    }
+
+    const handleSingleClip = (data) => {
+        setSingleClip(data)
+    }
+
+    const handleNumbers = () => {
+        setNumbers(true)
+    }
+
     useEffect(() => {
-        dispatch(selectedInputFile(fileUrl))
-    }, [fileUrl, dispatch]);
+        if (clipsCat === "Animals") {
+            axios.get("http://192.168.29.98/martiza_ink/wp-json/martiza/v1/cliparts_cats/18")
+                .then(response => setClip(JSON.parse(response.data)));
+        }
+        if (individualClip === "Aardvark") {
+            axios.get("http://192.168.29.98/martiza_ink/wp-json/martiza/v1/cliparts/24")
+                .then(response => setIndiClip(JSON.parse(response.data)));
+        }
+        // setIndividualClip(response.data)
+        // if (clipsCat === "Designs") {
+        //     axios.get("http://192.168.29.98/martiza_ink/wp-json/martiza/v1/cliparts_cats/20")
+        //     .then(response => setClip(JSON.parse(response.data)));
+        // }
+        // if (clipsCat === "Flags") {
+        //     axios.get("http://192.168.29.98/martiza_ink/wp-json/martiza/v1/cliparts_cats/22")
+        //     .then(response => setClip(JSON.parse(response.data)));
+        // }
+        // if (clipsCat === "Military") {
+        //     axios.get("http://192.168.29.98/martiza_ink/wp-json/martiza/v1/cliparts_cats/19")
+        //     .then(response => setClip(JSON.parse(response.data)));
+        // }
+        // if (clipsCat === "Music") {
+        //     axios.get("http://192.168.29.98/martiza_ink/wp-json/martiza/v1/cliparts_cats/21")
+        //     .then(response => setClip(JSON.parse(response.data)));
+        // }
+        // if (clipsCat === "Nature") {
+        //     axios.get("http://192.168.29.98/martiza_ink/wp-json/martiza/v1/cliparts_cats/23")
+        //     .then(response => setClip(JSON.parse(response.data)));
+        // }
+    }, [clipsCat, individualClip])
+
+
+    useEffect(() => {
+        if (fileUrl) {
+            dispatch(selectedInputFile(fileUrl))
+        }
+        if (singleClip) {
+            dispatch(imageClip(singleClip))
+        }
+    }, [fileUrl, dispatch, singleClip]);
+
+    useEffect(() => {
+        axios.get("http://192.168.29.98/martiza_ink/wp-json/martiza/v1/cliparts_cats")
+            .then(response => setClipsCat(JSON.parse(response.data)));
+    }, []);
 
 
     return (
@@ -73,7 +152,7 @@ const MenuEdits = ({ active }) => {
                                     <input
                                         type="file"
                                         id="fileElem"
-                                        accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,image/*"
+                                        accept=".csv,.txt,image/*"
                                         onChange={handleFileChange}
                                     />
                                     <label className="button choose-btn" htmlFor="fileElem">
@@ -104,19 +183,30 @@ const MenuEdits = ({ active }) => {
                                 <button className="input-btn"><img className="cross" src={search} alt="search icon" /></button>
                             </div>
                             <div className="art-btn-container">
-                                {artTypes && artTypes.map((key, index) => {
+                                {!clip && artTypes && artTypes.map((key, index) => {
                                     return (
-                                        <button className="art-btn" key={index}>
+                                        <button className="art-btn" key={index} onClick={() => handleClipart(key)}>
                                             <img src={key.icon} alt="icons" className="art-btn-svg"></img>
                                             <p className="btn-label">{key.name}</p>
                                         </button>
                                     )
                                 })}
+                                {indiClip !== undefined ?
+                                    indiClip.map((key, index) => (
+                                        <img src={key} alt='animals' key={index} className='image-clips' onClick={() => handleSingleClip(key)} />
+                                    ))
+                                    :
+                                    <ul className='list-container'>
+                                        {clip && clip.map((key, index) => (
+                                            <Link key={index} className='clipart-link' onClick={() => handleIndividualClip(key)}>{key.name}</Link>
+                                        ))}
+                                    </ul>
+                                }
                             </div>
                         </div>
                     </div>
                 }
-                {(active === "NameNumber") &&
+                {(active === "NameNumber") && numbers === false &&
                     <div className='studio-edits'>
                         <div className='studio-menu-items'>
                             <div className="edits-heading">
@@ -135,7 +225,94 @@ const MenuEdits = ({ active }) => {
                                 <img className="number-image" src={numberImage} alt="numbers" />
                             </div>
                             <div className="number-button" >
-                                <button className="button">Add Names & Numbers</button>
+                                <button className="button" onClick={handleNumbers}>Add Names & Numbers</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+                {(active === "NameNumber") && numbers === true &&
+                    <div className='studio-edits'>
+                        <div className='studio-menu-items'>
+                            <div className="edits-heading">
+                                <label>Names & Numbers</label>
+                                <div className="second-heading">
+                                    <div className='title'>Names & Numbers Tools</div>
+                                    <button>
+                                        <img className='cross' src={cross} alt='close' />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="art-box">
+                            <div className='steps number-and-name'>
+                                <div className='step-item'>
+                                    <div className='step-title'>Step 1</div>
+                                    <div className='step-data'>
+                                        <label>
+                                            <input type='checkbox' />
+                                            Add names
+                                        </label>
+                                        <label>
+                                            <input type='checkbox' />
+                                            Add numbers
+                                        </label>
+                                    </div>
+                                </div>
+                                <div className='step-item'>
+                                    <div className='step-title'>Side</div>
+                                    <div className='step-data'>
+                                        <div className='front'>
+                                            <img alt='' src='https://www.rushordertees.com/design/images/menu/edit-vinyl/porn_star_academy-front.png' />
+                                        </div>
+                                        <div className='back'>
+                                            <img alt='' src='https://www.rushordertees.com/design/images/menu/edit-vinyl/porn_star_academy-back.png' />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='step-item'>
+                                    <div className='step-title'>Size</div>
+                                    <div className='step-data'>
+                                        <div className='size-small size'>
+                                            <img alt='' src='https://www.rushordertees.com/design/images/menu/edit-vinyl/porn_star_academy-small.png' />
+                                        </div>
+                                        <div className='size-large size'>
+                                            <img alt='' src='https://www.rushordertees.com/design/images/menu/edit-vinyl/porn_star_academy-large.png' />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='step-item'>
+                                    <div className='step-title'>Font</div>
+                                    <div className='step-data'>
+                                        <div className='font-size'>
+                                            <img alt='' src='https://luhul4uhfg.execute-api.us-east-1.amazonaws.com/prod/getFontPreview?fontUrl=https://s3.amazonaws.com/eztees-fonts/interstate_black/interstate_black.ttf&previewText=Interstate' />
+                                        </div>
+                                        <div className='font-size'>
+                                            <img alt='' src='https://luhul4uhfg.execute-api.us-east-1.amazonaws.com/prod/getFontPreview?fontUrl=https://s3.amazonaws.com/eztees-fonts/porn_star_academy/porn_star_academy.ttf&previewText=Collegiate' />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='step-item'>
+                                    <div>Color</div>
+                                    <div className="font-styles">
+                                        <Link to='' className="inner-options">
+                                            <span className="input-inner-text">Black
+                                            </span>
+                                            <span className="select-color-1" style={{
+                                                backgroundColor: "Black"
+                                            }} />
+                                        </Link>
+                                        <Link to=''><img className="forward-icon" src={""} alt='' /></Link>
+                                    </div>
+                                </div>
+                                <div className='step-item'>
+                                    <span className='button-names'>
+                                        <a href='/' className='btn btn-primary btn-full'>Enter names/Number</a>
+                                    </span>
+                                </div>
+                                <div class="name-number-note">
+                                    Complete list required for accurate pricing
+                                    Names = $4.00 | Numbers = $3.00
+                                    Names & Numbers = $6.00</div>
                             </div>
                         </div>
                     </div>
@@ -143,7 +320,9 @@ const MenuEdits = ({ active }) => {
                 {(active === "DesignWizard") &&
                     <div className='studio-edits'>
                         <div className='studio-menu-items'>
-                            Design Wizard
+                            {designWizardActive && (
+                                <DesignWizard onPopupClose={handlePopupClose} />
+                            )}
                         </div>
                     </div>
                 }

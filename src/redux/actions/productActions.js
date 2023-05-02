@@ -32,10 +32,10 @@ export const selectedDesignId = (designId) => {
         payload: designId,
     };
 };
-export const selectedDesigns = (id) => {
+export const selectedDesigns = (data) => {
     return {
         type: ActionTypes.ALLDESIGNS,
-        payload: id,
+        payload: data,
     };
 };
 export const textFocus = (id) => {
@@ -65,6 +65,30 @@ export const reverseText = (data) => {
 export const flipText = (data) => {
     return {
         type: ActionTypes.FLIPTEXT,
+        payload: data,
+    };
+};
+export const canvasPosition = (data) => {
+    return {
+        type: ActionTypes.CANVASPOSITION,
+        payload: data,
+    };
+};
+export const designText = (data) => {
+    return {
+        type: ActionTypes.DESIGNTEXT,
+        payload: data,
+    };
+};
+export const productColor = (data) => {
+    return {
+        type: ActionTypes.PRODUCTCOLOR,
+        payload: data,
+    };
+};
+export const imageClip = (data) => {
+    return {
+        type: ActionTypes.IMAGECLIP,
         payload: data,
     };
 };

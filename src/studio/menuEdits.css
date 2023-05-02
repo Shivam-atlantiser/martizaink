@@ -138,14 +138,15 @@
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
-.btn-text{
+
+.btn-text {
   text-align: center;
   font-size: 10px;
   max-width: max-content;
   font-weight: 600;
 }
 
-.btn-combine{
+.btn-combine {
   display: flex;
 }
 
@@ -376,9 +377,9 @@ p {
 }
 
 .button:hover {
-  border-color: #f31000;
+  border-color: #ee5050;
   box-shadow: 0 2px 8px 0 rgba(255, 57, 39, 0.5);
-  background-color: #ff2701;
+  background-color: #ee5050;
 }
 
 .button {
@@ -518,7 +519,7 @@ p {
   user-select: none;
   color: #fff;
   background-color: #ee5050;
-  border-color: #ff390d;
+  border-color: #ee5050;
   height: 36px;
   position: relative;
   border-bottom-left-radius: 0;
@@ -610,4 +611,179 @@ p {
   text-align: center;
   max-height: 100%;
   max-width: 100%;
+}
+
+.clipart-link {
+  display: block;
+  color: #ee5050;
+  padding: 5px;
+}
+
+.clipart-link:hover {
+  text-decoration: underline;
+}
+
+.image-clips {
+  padding: 5px;
+  border: 1px dashed #555;
+  cursor: pointer;
+}
+
+.modal {
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 100%;
+  max-width: 1100px;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  right: 30px;
+  top: 30px;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+.two-column-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.column {
+  flex: 1;
+  padding: 20px;
+}
+
+.column-text {
+  text-align: left;
+}
+
+.column-image {
+  text-align: right;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+.column-text .h2{
+  font-size: 50px;
+  max-width: 400px;
+  line-height: 1.2;
+}
+.btn.btn-primary{
+  padding: 13px;
+  background: #ee5050;
+  max-width: 200px;
+  width: 100%;
+  color: #fff;
+  border-radius: 50px;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+.column-text .btn{
+  margin-top: 30px;
+}
+.column-text h2{
+  font-size: 50px;
+  max-width: 400px;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.number-and-name .step-item{
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #babbbd;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  align-items: center;
+}
+.number-and-name .step-item label{
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+.number-and-name .step-item .step-data{display: flex;}
+.number-and-name .step-item label input{
+  margin-right: 7px;
+}
+.step-data .front img,.step-data .back img{
+max-height: 25px;
+}
+.step-data .front ,.step-data .back {
+  padding: 10px;
+  border: 2px solid #ddd;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.step-data .size{
+  padding: 10px;
+  border: 2px solid #ddd;
+  margin-left: 5px;
+  margin-right: 5px;
+  display: flex;
+  align-items: center;
+}
+.step-data .size img{
+  max-height: 25px;
+}
+.step-data .size.size-small img{
+  max-height: 15px;
+}
+.font-size img{
+  max-height: 25px;
+  max-width: 115px;
+}
+.font-size{
+  padding: 10px;
+  border: 2px solid #ddd;
+  margin-left: 5px;
+  margin-right: 5px;
+  display: flex;
+  align-items: center;
+}
+.btn-full{
+  max-width: max-content !important;
+}
+.name-number-note{
+  text-align: center;
+  margin-top: 20px;
+}
+.button-names{
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }
