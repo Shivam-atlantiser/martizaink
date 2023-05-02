@@ -5,7 +5,7 @@ import tshirt2 from "../pages/assets/rt2000_f_mask.png"
 import tshirt3 from "../pages/assets/rt2000_f_texture.png"
 import { useSelector, useDispatch } from 'react-redux';
 import { SVG } from "@svgdotjs/svg.js";
-import { dragged } from "../redux/actions/productActions";
+import { canvasPosition, dragged } from "../redux/actions/productActions";
 
 const Canvas = () => {
   const dispatch = useDispatch();
@@ -15,46 +15,89 @@ const Canvas = () => {
   const [reverseElements, setReverseElements] = useState([]);
   const [svgImage, setSvgImage] = useState(null);
   const [isDragged, setIsDragged] = useState(false);
-  const [centerFlag, setCenterFlag] = useState(false);
   const positionableRef = useRef(null);
   const textRef = useRef(null);
   const imageDraggable = useRef(null);
+  const imageClipRef = useRef(null);
+
+
+
+  const handleImage = () => {
+    console.log("imageSelected")
+  }
+
+  const handleText = (id) => {
+    setIsDragged(false) 
+    console.log(id)
+  }
 
   useEffect(() => {
-    $(positionableRef.current).draggable();
-    $(imageDraggable.current).draggable();
-  }, []);
+      const positionable = $(positionableRef.current);
+      const text = $(textRef.current);
+      const width = positionable.width();
+      const centerX =  text.width()/ 2;
+      const left = centerX - width / 2;
+      positionable.css({ left });
+  }, [storeData?.selectedDesign?.centerText]);
 
 
   useEffect(() => {
-    $(positionableRef.current).draggable("option", "containment", "#newReference");
-    $(imageDraggable.current).draggable("option", "containment", "#newReference");
-  }, [storeData?.selectedDesigns?.design?.centerText, imageDraggable, positionableRef]);
-
+    $(positionableRef.current).draggable({
+      drag: function(event, ui) {
+        var left = ui.position.left;
+        var top = ui.position.top;
+        const position = { "left": left, "top": top };
+        dispatch(canvasPosition(position));
+      }
+    });
+    $(imageDraggable.current).draggable({
+      drag: function(event, ui) {
+        var left = ui.position.left;
+        var top = ui.position.top;
+        const position = { "left": left, "top": top };
+        dispatch(canvasPosition(position));
+      }
+    });
+    $(imageClipRef.current).draggable({
+      drag: function(event, ui) {
+        var left = ui.position.left;
+        var top = ui.position.top;
+        const position = { "left": left, "top": top };
+        dispatch(canvasPosition(position));
+      }
+    });
+  }, [dispatch]);
 
   useEffect(() => {
-    if (storeData?.selectedInputFile) {
-      const draw = SVG().addTo(imageDraggable.current).size(100, 100);
-      const image = draw.image(storeData?.selectedInputFile);
-      image.size(100, 100).move(0, 0);
+  if (storeData?.selectedInputFile) {
+    const draw = SVG().addTo(imageDraggable.current).size(200, 200);
+    const image = draw.image(storeData?.selectedInputFile);
+    image.size(200, 200).move(0, 0);
+    setSvgImage(draw);
+    return () => {
+      draw.clear();
+    };
+  }
+  if (isDragged === true) {
+    dispatch(dragged(isDragged))
+    }
+  }, [storeData?.selectedInputFile, isDragged, dispatch, storeData?.selectedDesigns?.design?.centerText]);
+  
+  useEffect(() => {
+    if (storeData?.imageClip) {
+      const draw = SVG().addTo(imageClipRef.current).size(200, 200);
+      const image = draw.image(storeData?.imageClip);
+      image.size(200, 200).move(0, 0);
       setSvgImage(draw);
-
       return () => {
         draw.clear();
       };
     }
     if (isDragged === true) {
       dispatch(dragged(isDragged))
-    }
-    if (storeData?.selectedDesigns?.design?.centerText === true) {
-      setCenterFlag(true)
-    }
-    else {
-      setCenterFlag(false)
-    }
-  }, [storeData?.selectedInputFile, isDragged, dispatch, storeData?.selectedDesigns?.design?.centerText]);
+      }
+  }, [storeData?.selectedInputFile, isDragged, dispatch, storeData?.selectedDesigns?.design?.centerText, storeData?.imageClip]);
 
-  // console.log(storeData);
 
   useEffect(() => {
     if (storeData?.selectedDesign !== undefined) {
@@ -142,30 +185,23 @@ const Canvas = () => {
     storeData?.selectedDesign?.outlineColor,
     storeData?.selectedDesign?.outlineSize,
     storeData?.selectedDesign?.textSpacing,
-    storeData?.selectedDesigns?.design?.textInput,
-    storeData?.selectedDesigns?.design?.fontFamily,
-    storeData?.selectedDesigns?.design?.fontFamily?.fontFamily,
-    storeData?.selectedDesigns?.design?.textColor,
-    storeData?.selectedDesigns?.design?.outlineColor,
-    storeData?.selectedDesigns?.design?.outlineSize,
-    storeData?.selectedDesigns?.design?.textSpacing,
-    storeData?.selectedDesigns?.design?.id,
   ]);
 
 
   return (
     <div className="canvas-container">
-      <img src={tshirt3} alt="canvas tshirt" className="img-canvas mask-image2" style={{ backgroundColor: dynamicColor, zIndex: -1, pointerEvents: "none" }} />
+      <img src={tshirt3} alt="canvas tshirt" className="img-canvas mask-image2" style={{ backgroundColor: storeData?.productColor?.color !== undefined ? storeData?.productColor?.color : dynamicColor, zIndex: -1, pointerEvents: "none" }} />
       <img src={tshirt2} alt="canvas tshirt" className="img-canvas mask-image" style={{ filter: "invert(1)", zIndex: 0, pointerEvents: "none" }} />
-      <div className="drag-space" id="newReference" style={{width: "1000px", height: "800px"}} ref={textRef}>
+      <div className="drag-space" id="newReference" ref={textRef}>
         <div
           className="ui-widget-content ui-draggable ui-draggable-handle"
           style={{ width: "max-content" }}
           id={storeData?.selectedDesignId?.id}
-          onClick={() => setIsDragged(false)}
+          onClick={() => handleText(storeData?.selectedDesigns?.id)}
           onMouseDown={() => setIsDragged(true)}
           onMouseUp={() => setIsDragged(false)}
           ref={positionableRef}
+
         >
           <div
             className="canvas-text-input"
@@ -202,6 +238,13 @@ const Canvas = () => {
           ref={imageDraggable}
           className="ui-widget-content ui-draggable ui-draggable-handle"
           style={{ width: "max-content", height: "max-content" }}
+          onClick={handleImage}
+        />
+        <div
+          ref={imageClipRef}
+          className="ui-widget-content ui-draggable ui-draggable-handle"
+          style={{ width: "max-content", height: "max-content" }}
+          onClick={handleImage}
         />
       </div>
     </div>

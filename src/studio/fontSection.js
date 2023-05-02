@@ -12,13 +12,14 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { dragged, flipText, reverseText, selectedDesign, selectedDesignId, selectedDesigns } from './../redux/actions/productActions';
 import { SVG } from '@svgdotjs/svg.js';
+import axios from 'axios';
 
 function FontSection(props) {
     const dispatch = useDispatch();
     const storeData = useSelector((state) => state.AllData);
     const inputRef = useRef(null);
     const [svgElements, setSvgElements] = useState([]);
-
+    const [duplicate, setDuplicate] = useState({});
     const [textSettings, setTextSettings] = useState(false);
     const [openPanel, setOpenPanel] = useState("");
     const handleClose = () => { setOpenPanel("") }
@@ -36,6 +37,10 @@ function FontSection(props) {
     const [centerText, setCenterText] = useState(false)
     const [textReverse, setTextReverse] = useState(false)
     const [textFlip, setTextFlip] = useState(false)
+    const [position, setPosition] = useState({ "left": 450, "top": 170 })
+    const [saveData, setSaveData] = useState(false)
+    const [newDesigns, setNewDesigns] = useState({});
+    const [colors, setColors] = useState('')
 
 
 
@@ -66,8 +71,8 @@ function FontSection(props) {
     }
 
     const handleChangeColor = (data) => {
-        setActive(data)
-        setTextColor(data)
+        setActive(data.color)
+        setTextColor(data.color_name)
     }
 
     const handleOutlineColor = (data) => {
@@ -97,7 +102,8 @@ function FontSection(props) {
         setTextSpacing(data.target.value)
     }
     const handleCenterText = () => {
-        centerText === false ? setCenterText(true) : setCenterText(false)
+        dispatch(dragged(false))
+        centerText === false ? setCenterText(true) : setCenterText(false);
     }
     const handleReverseText = () => {
         textReverse === false ? setTextReverse(true) : setTextReverse(false)
@@ -105,6 +111,18 @@ function FontSection(props) {
     const handleFlipText = () => {
         textFlip === false ? setTextFlip(true) : setTextFlip(false)
     }
+    const handleDuplicate = () => {
+        setDuplicate(storeData?.selectedDesign)
+    }
+
+    const handleSaveData = () => {
+        setSaveData(true)
+    }
+
+    useEffect(() => {
+        axios.get("http://192.168.29.98/martiza_ink/wp-json/martiza/v1/colors")
+            .then(response => setColors(JSON.parse(response.data)));
+    }, []);
 
 
     useEffect(() => {
@@ -122,15 +140,38 @@ function FontSection(props) {
         }
     }, [fontFamily, storeData?.dragged]);
 
+
+    const handleSave = () => {
+        let existingDesigns = { ...selectedDesigns };
+        let updatedDesigns = { ...existingDesigns, ...newDesigns };
+
+        dispatch(selectedDesigns(updatedDesigns));
+        localStorage.setItem("Data", JSON.stringify(updatedDesigns));
+        setNewDesigns({});
+    };
+
     useEffect(() => {
         let now = new Date();
-        let id = now.getDate() + "" + now.getHours() + "" + now.getMinutes()
+        let id = now.getDate() + "" + now.getHours() + "" + now.getMinutes();
         id = Number(id);
-        let design = {};
-        let designs = [];
-        let designsId = [];
-        design = {
-            id: id,
+
+        if (storeData?.canvasPosition !== undefined) {
+            setPosition(storeData.canvasPosition)
+        }
+
+        let existingDesigns = { ...selectedDesigns };
+        let newDesigns = {};
+
+        if (existingDesigns) {
+            newDesigns = { ...existingDesigns };
+        }
+
+        if (storeData?.canvasPosition !== undefined) {
+            setPosition(storeData?.canvasPosition)
+        }
+
+        let newDesign = {
+            id: id !== undefined ? id : undefined,
             textInput: textInput !== undefined ? textInput : undefined,
             fontFamily: fontFamily !== undefined ? fontFamily : undefined,
             textColor: textColor !== undefined ? textColor : undefined,
@@ -142,14 +183,22 @@ function FontSection(props) {
             textSpacing: textSpacing !== undefined ? textSpacing : undefined,
             arcDirection: arcDirection !== undefined ? arcDirection : undefined,
             centerText: centerText !== undefined ? centerText : undefined,
-        }
-        dispatch(selectedDesignId({ ...designsId, id }));
-        dispatch(selectedDesign(design));
-        dispatch(selectedDesigns({ ...designs, design }));
+            reverseText: textReverse !== undefined ? textReverse : undefined,
+            flipText: textFlip !== undefined ? textFlip : undefined,
+            designCanvasPosition: position !== undefined ? position : undefined,
+        };
+
+        newDesigns[id] = newDesign
+
+        dispatch(selectedDesigns(newDesigns));
+        dispatch(selectedDesignId(id));
+        dispatch(selectedDesign(newDesign));
         dispatch(reverseText(textReverse));
-        dispatch(flipText(textFlip))
+        dispatch(flipText(textFlip));
+        setNewDesigns({ ...newDesigns, [id]: newDesign })
     }, [
         dispatch,
+        duplicate,
         textInput,
         fontFamily,
         textColor,
@@ -162,18 +211,19 @@ function FontSection(props) {
         arcDirection,
         centerText,
         textReverse,
-        textFlip
+        textFlip,
+        storeData?.canvasPosition,
+        position
     ])
 
 
     useEffect(() => {
         var characters = [];
-        if (storeData?.selectedDesign !== undefined) {
-            if (storeData?.selectedDesigns?.design?.fontFamily?.fontFamily !== undefined) {
-                characters = storeData?.selectedDesigns?.design?.fontFamily?.fontFamily.split("");
-            }
-            else {
-                characters = characters = storeData?.selectedDesigns?.design?.fontFamily.split("");
+        if (storeData?.selectedDesign?.fontFamily !== undefined) {
+            if (storeData?.selectedDesign?.fontFamily?.fontFamily !== undefined) {
+                characters = storeData?.selectedDesign?.fontFamily?.fontFamily.split("");
+            } else {
+                characters = storeData?.selectedDesign?.fontFamily.split("");
             }
             const fontSize = 25;
             const letterSpacing = 21;
@@ -183,8 +233,8 @@ function FontSection(props) {
                     .text(char)
                     .font({
                         size: fontSize,
-                        family: storeData?.selectedDesigns?.design?.fontFamily?.fontFamily !== undefined
-                            ? storeData?.selectedDesigns?.design?.fontFamily?.fontFamily : "sans-serif",
+                        family: storeData?.selectedDesign?.fontFamily !== undefined
+                            ? storeData?.selectedDesign?.fontFamily : "sans-serif",
                     });
                 svgChar.add(svgText);
                 svgText.move(
@@ -195,8 +245,7 @@ function FontSection(props) {
             });
             setSvgElements(svgElementsArray);
         }
-
-    }, [storeData?.selectedDesign, fontFamily, storeData?.selectedDesigns?.design])
+    }, [storeData?.selectedDesign, fontFamily])
 
 
     return (
@@ -230,9 +279,15 @@ function FontSection(props) {
                             <div className='select-color-heading'>
                                 Color : {textColor ? textColor : "White"}
                             </div>
-                            {storeData?.styles.colors && storeData?.styles.colors.map((key, index) =>
+                            {colors === undefined ? 
+                                storeData?.styles.colors && storeData?.styles.colors.map((key, index) =>
                                 <div key={index} className={`hover-border ${active === key && 'active'}`}>
-                                    <span key={index} className="color-panel-options" style={{ backgroundColor: key }} onClick={() => handleChangeColor(key)} />
+                                    <span key={index} className="color-panel-options" style={{ backgroundColor: key.color }} onClick={() => handleChangeColor(key)} />
+                                    </div>)
+                                    :
+                                   colors.map((key, index) =>
+                                <div key={index} className={`hover-border ${active === key.color && 'active'}`}>
+                                    <span key={index} className="color-panel-options" style={{ backgroundColor: key.color }} onClick={() => handleChangeColor(key)} />
                                 </div>
                             )}
                         </div>
@@ -267,7 +322,7 @@ function FontSection(props) {
                         <div className="text-editor">
                             <textarea placeholder="Begin Typing..."
                                 onChange={(e) => { handleChange(e) }}
-                                defaultValue={storeData?.selectedDesigns?.design?.id === storeData?.textFocus ? storeData?.selectedDesigns?.design?.textInput : ""}
+                                defaultValue={storeData?.selectedDesign?.id === storeData?.textFocus ? storeData?.selectedDesign?.textInput : ""}
                                 ref={inputRef} />
                         </div>
                         {(textSettings === true) &&
@@ -282,8 +337,7 @@ function FontSection(props) {
                                     <div className="btn-g">
                                         <div className='btn-combine'>
                                             <button className="btn-c" style={{
-                                                opacity: Object.keys(storeData?.selectedDesigns).length > 1 ? "" : "0.2"
-                                                // ":hover": { opacity: 1 }
+                                                opacity: Object.keys(storeData?.selectedDesign).length > 1 ? "" : "0.2"
                                             }}
                                             >
                                                 <Link className="btn" to=''>
@@ -302,21 +356,22 @@ function FontSection(props) {
                                         <div className='btn-combine'>
                                             <button className="btn-c" onClick={handleReverseText}>
                                                 <Link className="btn" to='' style={{
-                                                    backgroundColor: storeData?.reverseText === true ? "#ee5050" : "",
-                                                    borderColor :  storeData?.reverseText === true ? "#ee5050" : ""
+                                                    backgroundColor: storeData?.selectedDesign?.reverseText === true ? "#ee5050" : "",
+                                                    borderColor: storeData?.selectedDesign?.reverseText === true ? "#ee5050" : ""
                                                 }}>
                                                     <FlipHorizontalSVG style={{
-                                                        fill: storeData?.reverseText && "#fff" 
+                                                        fill: storeData?.selectedDesign?.reverseText && "#fff"
                                                     }} />
                                                 </Link>
                                             </button>
                                             <button className="btn-c" onClick={handleFlipText}>
                                                 <Link className="btn" to='' style={{
-                                                    backgroundColor: storeData?.flipText === true ? "#ee5050" : "",
-                                                    borderColor :  storeData?.flipText === true ? "#ee5050" : ""
+                                                    backgroundColor: storeData?.selectedDesign?.flipText === true ? "#ee5050" : "",
+                                                    borderColor: storeData?.selectedDesign?.flipText === true ? "#ee5050" : ""
                                                 }}>
                                                     <FlipVerticalSVG style={{
-                                                        fill: storeData?.flipText && "#fff"                                                 }} />
+                                                        fill: storeData?.selectedDesign?.flipText && "#fff"
+                                                    }} />
                                                 </Link>
                                             </button>
                                         </div>
@@ -329,7 +384,7 @@ function FontSection(props) {
                                         <span className="btn-text">Lock</span>
                                     </div>
                                     <div className="btn-c">
-                                        <Link className="btn" to=''>
+                                        <Link className="btn" to='' onClick={handleDuplicate}>
                                             <DuplicateSVG />
                                         </Link>
                                         <span className="btn-text">Duplicate</span>
@@ -363,12 +418,12 @@ function FontSection(props) {
                                     <div className="font-styles">
                                         <Link to='' className="inner-options">
                                             <span className="input-inner-text">{
-                                                storeData?.selectedDesigns?.design?.textColor !== undefined ?
-                                                    storeData?.selectedDesigns?.design?.textColor : "Black"
+                                                storeData?.selectedDesign?.textColor !== undefined ?
+                                                    storeData?.selectedDesign?.textColor : "Black"
                                             }</span>
                                             <span className="select-color-1" style={{
-                                                backgroundColor: storeData?.selectedDesigns?.design?.textColor !== undefined ?
-                                                    storeData?.selectedDesigns?.design?.textColor : "Black"
+                                                backgroundColor: storeData?.selectedDesign?.textColor !== undefined ?
+                                                    storeData?.selectedDesign?.textColor : "Black"
                                             }} />
                                         </Link>
                                         <Link to=''><img className="forward-icon" src={forward} alt='forward' /></Link>
@@ -379,12 +434,12 @@ function FontSection(props) {
                                     <div className="font-styles" >
                                         <Link to='' className="inner-options">
                                             <span className="input-inner-text">{
-                                                storeData?.selectedDesigns?.design?.outlineColor !== undefined ?
-                                                    storeData?.selectedDesigns?.design?.outlineColor : "None"
+                                                storeData?.selectedDesign?.outlineColor !== undefined ?
+                                                    storeData?.selectedDesign?.outlineColor : "None"
                                             }</span>
                                             <span className="select-color-2" style={{
-                                                backgroundColor: storeData?.selectedDesigns?.design?.outlineColor !== undefined ?
-                                                    storeData?.selectedDesigns?.design?.outlineColor : "White"
+                                                backgroundColor: storeData?.selectedDesign?.outlineColor !== undefined ?
+                                                    storeData?.selectedDesign?.outlineColor : "White"
                                             }} />
                                         </Link>
                                         <Link to=''><img className="forward-icon" src={forward} alt='forward' /></Link>
@@ -393,47 +448,50 @@ function FontSection(props) {
                                 <section className="text-form">
                                     <div>Size</div>
                                     <input type="range" className="input-slider" id="vol" name="vol" min="0" max="10" onChange={handleTextSize} defaultValue={
-                                        storeData?.selectedDesigns?.design?.textSize !== undefined ?
-                                            storeData?.selectedDesigns?.design?.textSize : 1
+                                        storeData?.selectedDesign?.textSize !== undefined ?
+                                            storeData?.selectedDesign?.textSize : 1
                                     } />
                                     <input className="input-box-font" defaultValue={
-                                        storeData?.selectedDesigns?.design?.textSize !== undefined ?
-                                            storeData?.selectedDesigns?.design?.textSize : "None"
+                                        storeData?.selectedDesign?.textSize !== undefined ?
+                                            storeData?.selectedDesign?.textSize : "None"
                                     } type='number' />
                                 </section>
                                 <section className="text-form">
                                     <div>Arc</div>
                                     <input type="range" className="input-slider" id="vol" name="vol" min="-360" max="360" onChange={handleArcSize} defaultValue={
-                                        storeData?.selectedDesigns?.design?.arcSize !== undefined ?
-                                            storeData?.selectedDesigns?.design?.arcSize : 1
+                                        storeData?.selectedDesign?.arcSize !== undefined ?
+                                            storeData?.selectedDesign?.arcSize : 1
                                     } />
                                     <input className="input-box-font" defaultValue={
-                                        storeData?.selectedDesigns?.design?.arcSize !== undefined ?
-                                            storeData?.selectedDesigns?.design?.arcSize : 1
+                                        storeData?.selectedDesign?.arcSize !== undefined ?
+                                            storeData?.selectedDesign?.arcSize : 1
                                     } type='number' />
                                 </section>
                                 <section className="text-form">
                                     <div>Rotate</div>
                                     <input type="range" className="input-slider" id="vol" name="vol" min="0" max="360" onChange={handleTextRotate} defaultValue={
-                                        storeData?.selectedDesigns?.design?.textRotate !== undefined ?
-                                            storeData?.selectedDesigns?.design?.textRotate : 1
+                                        storeData?.selectedDesign?.textRotate !== undefined ?
+                                            storeData?.selectedDesign?.textRotate : 1
                                     } />
                                     <input className="input-box-font" defaultValue={
-                                        storeData?.selectedDesigns?.design?.textRotate !== undefined ?
-                                            storeData?.selectedDesigns?.design?.textRotate : 1
+                                        storeData?.selectedDesign?.textRotate !== undefined ?
+                                            storeData?.selectedDesign?.textRotate : 1
                                     } type='number' />
                                 </section>
                                 <section className="text-form">
                                     <div>Spacing</div>
                                     <input type="range" className="input-slider" id="vol" name="vol" min="0" max="40" onChange={handleTextSpacing} defaultValue={
-                                        storeData?.selectedDesigns?.design?.textSpacing !== undefined ?
-                                            storeData?.selectedDesigns?.design?.textSpacing : 1
+                                        storeData?.selectedDesign?.textSpacing !== undefined ?
+                                            storeData?.selectedDesign?.textSpacing : 1
                                     } />
                                     <input className="input-box-font" defaultValue={
-                                        storeData?.selectedDesigns?.design?.textSpacing !== undefined ?
-                                            storeData?.selectedDesigns?.design?.textSpacing : 1
+                                        storeData?.selectedDesign?.textSpacing !== undefined ?
+                                            storeData?.selectedDesign?.textSpacing : 1
                                     } type='number' />
                                 </section>
+                                <button className='button' onClick={handleSave}>
+                                    Save design
+                                </button>
                             </div>
                         }
                     </div>

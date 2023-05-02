@@ -5,8 +5,11 @@ import { ReactComponent as UploadSvg } from "./snippets/upload.svg"
 import { ReactComponent as ClipartSvg } from "./snippets/clipart.svg"
 import { ReactComponent as NameNumberSvg } from "./snippets/name-number.svg"
 import { ReactComponent as DesignWizard } from "./snippets/design-wizard.svg"
+import martizaink_logo  from "../pages/assets/martizaink_Logo.svg"
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
+
+
 export default class Sidebar extends Component {
     render() {
         let active = this.props.active;
@@ -14,7 +17,7 @@ export default class Sidebar extends Component {
             <div className='studio-tools-sidebar'>
 
                 <div className='logo'>
-                    <img src="./logo192.png" alt="logo"/>
+                    <img src={martizaink_logo} alt="logo"/>
                 </div>
                 <div className='studio-tools'>
                     <Link to="" className={active === "Product" ? "active tool" : "tool"} onClick={() => this.props.handler("Product")}>

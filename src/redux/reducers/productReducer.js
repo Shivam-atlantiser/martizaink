@@ -4,7 +4,8 @@ import crenwneckTshirt from '../../pages/assets/Next Level Apparel Crewneck T-Sh
 import adobeGrade from '../../pages/assets/adobe grade.png';
 import alpha from '../../pages/assets/alpha.png';
 import bladeRunner from '../../pages/assets/Blade Runner.png';
-import fontStyle from "../../pages/assets/fonts/stylesheet.css"
+import fontStyle from "../../pages/assets/fonts/stylesheet.css";
+
 
 const initialState = {
     products: [
@@ -88,6 +89,7 @@ const initialState = {
 };
 
 
+
 export const productReducer = (state = initialState, { type, payload }) => {
     switch (type) {
         case ActionTypes.SET_PRODUCTS:
@@ -112,6 +114,14 @@ export const productReducer = (state = initialState, { type, payload }) => {
             return { ...state, reverseText: payload };
         case ActionTypes.FLIPTEXT:
             return { ...state, flipText: payload };
+        case ActionTypes.CANVASPOSITION:
+            return { ...state, canvasPosition: payload };
+        case ActionTypes.DESIGNTEXT:
+            return { ...state, designText: payload };
+        case ActionTypes.PRODUCTCOLOR:
+            return { ...state, productColor: payload };
+        case ActionTypes.IMAGECLIP:
+            return { ...state, imageClip: payload };
         default:
             return state;
     }

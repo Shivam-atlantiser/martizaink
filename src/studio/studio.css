@@ -5,15 +5,16 @@
 }
 
 .studio-editor {
-  width: max-content;
-  display: inline-flex;
-  max-width: 40%;
+  width: 100%;
+  display: flex;
 }
 
 .studio-viewer {
   width: 100%;
-  display: block;
-  max-width: 60%;
+  max-width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
 }
 
 .canvas-container {
@@ -21,7 +22,7 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  width: 100%;
+  width: 60%;
   height: 100%;
 }
 
@@ -47,10 +48,93 @@
   pointer-events: none;
   touch-action: none;
 }
-.canvas-text-input{
+
+.canvas-text-input {
   border: 1px dotted grey;
   background-color: #ffffff00;
   text-align: center;
   height: 100%;
-    width: 100%;
+  width: 100%;
+}
+
+.studio-navbar {
+  display: flex;
+  width: 100%;
+  height: 80px;
+  z-index: 1;
+  align-items: center;
+  border-bottom: 1px solid #b4b8c14a;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex: 1;
+  flex-grow: 1;
+  box-shadow: 0 2px 8px 0 rgba(204, 207, 214, .5);
+  justify-content: space-between;
+}
+
+.headings-navbar {
+  display: flex;
+}
+
+.sub-head {
+  padding: 0px 30px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 1.25px;
+  -webkit-transition: color .25s linear;
+  transition: color .25s linear;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.img-icon {
+  max-width: 40px;
+  max-height: 40px;
+}
+
+.studio-nav {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.number-head {
+  background-color: #b4b8c1;
+  color: #fff;
+  border: 1px solid #b4b8c1;
+  border-radius: 50px;
+  padding: 2px 6px;
+}
+
+.sub-head:hover {
+  color: #27a6ff;
+}
+
+.sub-head:hover .number-head {
+  background-color: #27a6ff;
+  color: #fff;
+  border: 1px solid #27a6ff;
+}
+
+.right-menus {
+  display: flex;
+  flex-direction: row;
+}
+.menu-link{
+  display: flex;
+  flex-direction: row;
+  padding: 5px 40px;
+  align-items: center;
+
+}
+.inner-menus{
+  display: flex;
+  flex-direction: column;
+}
+.menu-title{
+  color: #27a6ff;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: proxima-soft,sans-serif;
+  letter-spacing: .35px;
 }

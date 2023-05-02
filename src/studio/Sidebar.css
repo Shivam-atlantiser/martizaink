@@ -9,13 +9,12 @@
   max-width: 25px;
 }
 .studio-tools-sidebar .logo img {
-  max-width: 100%;
-  max-width: 50px;
+  max-width: 80px;
   margin-left: auto;
   margin-right: auto;
 }
 .studio-tools-sidebar .logo {
-  padding-top: 15px;
+  padding-top: 25px;
   padding-bottom: 25px;
 }
 .studio-tools .tool {

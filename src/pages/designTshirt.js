@@ -1,24 +1,27 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import whiteTshirt from './assets/ZoomImage.jpg'
 // import tick from './assets/tick.svg'
 // import arrow from './assets/tick.svg'
-import { options, colors } from './products'
-import dropdown from './assets/dropdown.svg'
+// import { options, colors } from './products'
+// import dropdown from './assets/dropdown.svg'
 // import dropdownClose from './assets/dropdown-close.svg'
 import forward from './assets/forward.svg'
-import SingleProduct from './singleProduct'
-import group1 from './assets/group1.avif'
-import group2 from './assets/group2.avif'
-import group3 from './assets/group3.avif'
+// import SingleProduct from './singleProduct'
+// import group1 from './assets/group1.avif'
+// import group2 from './assets/group2.avif'
+// import group3 from './assets/group3.avif'
 import tipimage from './assets/dog1.avif'
-import delivery from './assets/delivery.svg'
-import industry from './assets/industry.svg'
-import pricing from './assets/pricing.svg'
-import user from './assets/user.svg'
+// import delivery from './assets/delivery.svg'
+// import industry from './assets/industry.svg'
+// import pricing from './assets/pricing.svg'
+// import user from './assets/user.svg'
 import plus from './assets/plus.svg'
-import minus from './assets/minus.svg'
-import { faqs } from './products'
+// import minus from './assets/minus.svg'
+// import { faqs } from './products'
 import { Link } from 'react-router-dom'
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { productColor } from './../redux/actions/productActions';
 
 
 
@@ -42,14 +45,17 @@ function DesignTshirt() {
     const [active, setActive] = useState(null)
     const [acc_icon, setAcc_icon] = useState(plus);
     const [clicked, setClicked] = useState("0");
+    const [dynamicColors, setColors] = useState('')
+    const dispatch = useDispatch();
 
     const handleHover = (key) => {
         setDropValue(key)
         setShowDiv(false)
     }
     const handleColor = (key) => {
-        setDefaultColor(key)
-        setActive(key)
+        setDefaultColor(key.color)
+        setActive(key.color_name)
+        dispatch(productColor(key))
     }
 
     const handleToggle = (index) => {
@@ -74,16 +80,21 @@ function DesignTshirt() {
         );
     };
 
+    useEffect(() => {
+        axios.get("http://192.168.29.98/martiza_ink/wp-json/martiza/v1/colors")
+            .then(response => setColors(JSON.parse(response.data)));
+    }, []);
+
     return (<>
         <div className='single-design-tshirt'>
             <div className='container design-page-container'>
                 <img src={whiteTshirt} alt='design tshirt' className='fixed-tshirt-image' />
                 <div className='product-info'>
-                    <p className='design-ratings'><span className='rating mr-2'>★★★★★</span> 24,000 5-star reviews</p>
+                    {/* <p className='design-ratings'><span className='rating mr-2'>★★★★★</span> 24,000 5-star reviews</p> */}
                     <p className='design-heading'>Design Custom T-Shirts</p>
                     <p className='design-sub-heading'>Make and print your own shirt design</p>
                     <div>
-                        <div className="relative w-full custom-dropdown" onMouseEnter={() => setShowDiv(true)} onMouseLeave={() => setShowDiv(false)}>
+                        {/* <div className="relative w-full custom-dropdown" onMouseEnter={() => setShowDiv(true)} onMouseLeave={() => setShowDiv(false)}>
                             {
                                 options.map((key, index) => (
                                     index === 0 && showDiv === false ?
@@ -113,22 +124,24 @@ function DesignTshirt() {
                                                 </p>
                                             </div>
                                             <div className='dropdownArrow'>
-                                                {/* <img src={dropdownClose} alt="dropdown icon" className='dropdown' /> */}
+                                                <img src={dropdownClose} alt="dropdown icon" className='dropdown' />
                                             </div>
                                         </div>
                                 ))}
-                        </div>
+                        </div> */}
                     </div>
                     <div className='select-color-heading'>
                         Selected Color : {defaultColor ? defaultColor : "White"}
                     </div>
                     <div className='color-input-box position_alteration'>
-                        {colors !== undefined &&
-                            colors.map((key, index) =>
-                                <span className='outer-colors' key={index}>
-                                    <span className={`color-input  ${active === key && 'active'}`} style={{ backgroundColor: key }} onClick={() => handleColor(key)} />
-                                </span>
-                            )
+                        {dynamicColors && dynamicColors !== undefined ? dynamicColors.map((key, index) =>
+                            <span className='outer-colors' key={index}>
+                                <span className={`color-input  ${active === key && 'active'}`} style={{ backgroundColor: key.color }} onClick={() => handleColor(key)} />
+                            </span>
+                        ) : 
+                        <span className='outer-colors'>
+                                <span className={`color-input  ${active === "Black" && 'active'}`} style={{ backgroundColor: "black" }}/>
+                            </span>
                         }
                     </div>
                     <button className='design-button design-button-2 design-page-button'>
@@ -139,7 +152,7 @@ function DesignTshirt() {
                 </div>
             </div>
         </div>
-        <div className='category-section design-page-category-section'>
+        {/* <div className='category-section design-page-category-section'>
             <p className='category-heading design-page-category-heading'>Find the Right Shirt</p>
             <div className='container categories'>
                 <div className='columns-4'>
@@ -247,7 +260,7 @@ function DesignTshirt() {
                 </div>
             </div>
 
-        </div>
+        </div> */}
     </>
     )
 }
