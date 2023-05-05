@@ -10,7 +10,7 @@ import cross from './snippets/cross.svg'
 import forward from './snippets/forward.svg';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { dragged, flipText, reverseText, selectedDesign, selectedDesignId, selectedDesigns } from './../redux/actions/productActions';
+import { dragged, flipText, reverseText, selectedDesign, selectedDesigns } from './../redux/actions/productActions';
 import { SVG } from '@svgdotjs/svg.js';
 import axios from 'axios';
 
@@ -32,27 +32,24 @@ function FontSection(props) {
     const [textSize, setTextSize] = useState(1)
     const [arcSize, setArcSize] = useState(0)
     const [textRotate, setTextRotate] = useState(0)
-    const [textSpacing, setTextSpacing] = useState(30)
+    const [textSpacing, setTextSpacing] = useState(18)
     const [arcDirection, setArcDirection] = useState(0)
     const [centerText, setCenterText] = useState(false)
     const [textReverse, setTextReverse] = useState(false)
     const [textFlip, setTextFlip] = useState(false)
     const [position, setPosition] = useState({ "left": 450, "top": 170 })
-    const [saveData, setSaveData] = useState(false)
-    const [newDesigns, setNewDesigns] = useState({});
-    const [colors, setColors] = useState('')
-
-
+    const [dataSave, setDataSave] = useState(false)
+    const [colors, setColors] = useState(undefined)
 
     const handleChange = (e) => {
         if (e.target.value !== "") {
             setTextSettings(true);
-            setTextInput(e.target.value)
+            setTextInput(e.target.value);
         } else {
             setTextSettings(false);
-            setTextInput('')
+            setTextInput('');
         }
-    }
+    };
 
     const handleFonts = () => {
         setOpenPanel("fonts-edit")
@@ -71,8 +68,8 @@ function FontSection(props) {
     }
 
     const handleChangeColor = (data) => {
-        setActive(data.color)
-        setTextColor(data.color_name)
+        setActive(data)
+        setTextColor(data)
     }
 
     const handleOutlineColor = (data) => {
@@ -115,8 +112,8 @@ function FontSection(props) {
         setDuplicate(storeData?.selectedDesign)
     }
 
-    const handleSaveData = () => {
-        setSaveData(true)
+    const handleDataSave = () => {
+        setDataSave(true)
     }
 
     useEffect(() => {
@@ -141,62 +138,77 @@ function FontSection(props) {
     }, [fontFamily, storeData?.dragged]);
 
 
-    const handleSave = () => {
-        let existingDesigns = { ...selectedDesigns };
-        let updatedDesigns = { ...existingDesigns, ...newDesigns };
-
-        dispatch(selectedDesigns(updatedDesigns));
-        localStorage.setItem("Data", JSON.stringify(updatedDesigns));
-        setNewDesigns({});
-    };
-
     useEffect(() => {
         let now = new Date();
-        let id = now.getDate() + "" + now.getHours() + "" + now.getMinutes();
+        let id = now.getDate() + "" + now.getHours() + "" + now.getMilliseconds();
         id = Number(id);
 
         if (storeData?.canvasPosition !== undefined) {
             setPosition(storeData.canvasPosition)
         }
 
-        let existingDesigns = { ...selectedDesigns };
-        let newDesigns = {};
-
-        if (existingDesigns) {
-            newDesigns = { ...existingDesigns };
-        }
-
-        if (storeData?.canvasPosition !== undefined) {
-            setPosition(storeData?.canvasPosition)
-        }
-
         let newDesign = {
-            id: id !== undefined ? id : undefined,
-            textInput: textInput !== undefined ? textInput : undefined,
-            fontFamily: fontFamily !== undefined ? fontFamily : undefined,
-            textColor: textColor !== undefined ? textColor : undefined,
-            outlineColor: outlineColor !== undefined ? outlineColor : undefined,
-            outlineSize: outlineSize !== undefined ? outlineSize : undefined,
-            textSize: textSize !== undefined ? textSize : undefined,
-            arcSize: arcSize !== undefined ? arcSize : undefined,
-            textRotate: textRotate !== undefined ? textRotate : undefined,
-            textSpacing: textSpacing !== undefined ? textSpacing : undefined,
-            arcDirection: arcDirection !== undefined ? arcDirection : undefined,
-            centerText: centerText !== undefined ? centerText : undefined,
-            reverseText: textReverse !== undefined ? textReverse : undefined,
-            flipText: textFlip !== undefined ? textFlip : undefined,
-            designCanvasPosition: position !== undefined ? position : undefined,
+            id: id,
+            textInput: textInput,
+            fontFamily: fontFamily,
+            textColor: textColor,
+            outlineColor: outlineColor,
+            outlineSize: outlineSize,
+            textSize: textSize,
+            arcSize: arcSize,
+            textRotate: textRotate,
+            textSpacing: textSpacing,
+            arcDirection: arcDirection,
+            centerText: centerText,
+            reverseText: textReverse,
+            flipText: textFlip,
+            designCanvasPosition: position,
         };
 
-        newDesigns[id] = newDesign
-
-        dispatch(selectedDesigns(newDesigns));
-        dispatch(selectedDesignId(id));
+        setDataSave(false)
         dispatch(selectedDesign(newDesign));
         dispatch(reverseText(textReverse));
         dispatch(flipText(textFlip));
-        setNewDesigns({ ...newDesigns, [id]: newDesign })
+
+
+        let existingDesigns = JSON.parse(localStorage.getItem("selectedDesigns")) || {};
+
+
+        if (existingDesigns.hasOwnProperty(storeData?.selectedDesignId)) {
+            if (storeData?.selectedDesignId !== undefined) {
+                setTextSettings(true)
+                let indiValues = existingDesigns[storeData?.selectedDesignId];
+                        setTextInput(indiValues?.textInput)
+                        setFontFamily(indiValues?.fontFamily)
+                        setTextColor(indiValues?.textColor)
+                        setOutlineColor(indiValues?.outlineColor)
+                        setOutlineSize(indiValues?.outlineSize)
+                        setTextSize(indiValues?.textSize)
+                        setArcSize(indiValues?.arcSize)
+                        setTextRotate(indiValues?.textRotate)
+                        setTextSpacing(indiValues?.textSpacing)
+                        setArcDirection(indiValues?.arcDirection)
+                        setCenterText(indiValues?.centerText)
+                        // setTextReverse(indiValues?.textReverse)
+                        setTextFlip(indiValues?.textFlip)
+                        setPosition(indiValues?.designCanvasPosition)
+            }
+            if (dataSave === true) {
+                localStorage.setItem("selectedDesigns", JSON.stringify(existingDesigns));
+            }
+
+        } else {
+
+            let newDesigns = { ...existingDesigns, [id]: newDesign };
+            dispatch(selectedDesigns(newDesigns));
+
+            if (dataSave === true) {
+                localStorage.setItem("selectedDesigns", JSON.stringify(newDesigns));
+            }
+        }
+
     }, [
+        storeData?.selectedDesignId,
         dispatch,
         duplicate,
         textInput,
@@ -213,9 +225,9 @@ function FontSection(props) {
         textReverse,
         textFlip,
         storeData?.canvasPosition,
-        position
+        position,
+        dataSave
     ])
-
 
     useEffect(() => {
         var characters = [];
@@ -279,17 +291,17 @@ function FontSection(props) {
                             <div className='select-color-heading'>
                                 Color : {textColor ? textColor : "White"}
                             </div>
-                            {colors === undefined ? 
-                                storeData?.styles.colors && storeData?.styles.colors.map((key, index) =>
-                                <div key={index} className={`hover-border ${active === key && 'active'}`}>
-                                    <span key={index} className="color-panel-options" style={{ backgroundColor: key.color }} onClick={() => handleChangeColor(key)} />
+                            {colors === undefined ?
+                                storeData?.styles?.colors && storeData?.styles?.colors.map((key, index) =>
+                                    <div key={index} className={`hover-border ${active === key && 'active'}`}>
+                                        <span key={index} className="color-panel-options" style={{ backgroundColor: key }} onClick={() => handleChangeColor(key)} />
                                     </div>)
-                                    :
-                                   colors.map((key, index) =>
-                                <div key={index} className={`hover-border ${active === key.color && 'active'}`}>
-                                    <span key={index} className="color-panel-options" style={{ backgroundColor: key.color }} onClick={() => handleChangeColor(key)} />
-                                </div>
-                            )}
+                                :
+                                colors.map((key, index) =>
+                                    <div key={index} className={`hover-border ${active === key.color && 'active'}`}>
+                                        <span key={index} className="color-panel-options" style={{ backgroundColor: key.color }} onClick={() => handleChangeColor(key)} />
+                                    </div>
+                                )}
                         </div>
                     }
                     {openPanel === "outline" &&
@@ -322,7 +334,7 @@ function FontSection(props) {
                         <div className="text-editor">
                             <textarea placeholder="Begin Typing..."
                                 onChange={(e) => { handleChange(e) }}
-                                defaultValue={storeData?.selectedDesign?.id === storeData?.textFocus ? storeData?.selectedDesign?.textInput : ""}
+                                defaultValue={textInput}
                                 ref={inputRef} />
                         </div>
                         {(textSettings === true) &&
@@ -418,12 +430,11 @@ function FontSection(props) {
                                     <div className="font-styles">
                                         <Link to='' className="inner-options">
                                             <span className="input-inner-text">{
-                                                storeData?.selectedDesign?.textColor !== undefined ?
-                                                    storeData?.selectedDesign?.textColor : "Black"
+                                                textColor
                                             }</span>
                                             <span className="select-color-1" style={{
-                                                backgroundColor: storeData?.selectedDesign?.textColor !== undefined ?
-                                                    storeData?.selectedDesign?.textColor : "Black"
+                                                backgroundColor:
+                                                    textColor
                                             }} />
                                         </Link>
                                         <Link to=''><img className="forward-icon" src={forward} alt='forward' /></Link>
@@ -434,12 +445,10 @@ function FontSection(props) {
                                     <div className="font-styles" >
                                         <Link to='' className="inner-options">
                                             <span className="input-inner-text">{
-                                                storeData?.selectedDesign?.outlineColor !== undefined ?
-                                                    storeData?.selectedDesign?.outlineColor : "None"
+                                                outlineColor
                                             }</span>
                                             <span className="select-color-2" style={{
-                                                backgroundColor: storeData?.selectedDesign?.outlineColor !== undefined ?
-                                                    storeData?.selectedDesign?.outlineColor : "White"
+                                                outlineColor
                                             }} />
                                         </Link>
                                         <Link to=''><img className="forward-icon" src={forward} alt='forward' /></Link>
@@ -448,48 +457,40 @@ function FontSection(props) {
                                 <section className="text-form">
                                     <div>Size</div>
                                     <input type="range" className="input-slider" id="vol" name="vol" min="0" max="10" onChange={handleTextSize} defaultValue={
-                                        storeData?.selectedDesign?.textSize !== undefined ?
-                                            storeData?.selectedDesign?.textSize : 1
+                                        textSize
                                     } />
                                     <input className="input-box-font" defaultValue={
-                                        storeData?.selectedDesign?.textSize !== undefined ?
-                                            storeData?.selectedDesign?.textSize : "None"
+                                        textSize
                                     } type='number' />
                                 </section>
                                 <section className="text-form">
                                     <div>Arc</div>
                                     <input type="range" className="input-slider" id="vol" name="vol" min="-360" max="360" onChange={handleArcSize} defaultValue={
-                                        storeData?.selectedDesign?.arcSize !== undefined ?
-                                            storeData?.selectedDesign?.arcSize : 1
+                                        arcSize
                                     } />
                                     <input className="input-box-font" defaultValue={
-                                        storeData?.selectedDesign?.arcSize !== undefined ?
-                                            storeData?.selectedDesign?.arcSize : 1
+                                        arcSize
                                     } type='number' />
                                 </section>
                                 <section className="text-form">
                                     <div>Rotate</div>
                                     <input type="range" className="input-slider" id="vol" name="vol" min="0" max="360" onChange={handleTextRotate} defaultValue={
-                                        storeData?.selectedDesign?.textRotate !== undefined ?
-                                            storeData?.selectedDesign?.textRotate : 1
+                                        textRotate
                                     } />
                                     <input className="input-box-font" defaultValue={
-                                        storeData?.selectedDesign?.textRotate !== undefined ?
-                                            storeData?.selectedDesign?.textRotate : 1
+                                        textRotate
                                     } type='number' />
                                 </section>
                                 <section className="text-form">
                                     <div>Spacing</div>
                                     <input type="range" className="input-slider" id="vol" name="vol" min="0" max="40" onChange={handleTextSpacing} defaultValue={
-                                        storeData?.selectedDesign?.textSpacing !== undefined ?
-                                            storeData?.selectedDesign?.textSpacing : 1
+                                        textSpacing
                                     } />
                                     <input className="input-box-font" defaultValue={
-                                        storeData?.selectedDesign?.textSpacing !== undefined ?
-                                            storeData?.selectedDesign?.textSpacing : 1
+                                        textSpacing
                                     } type='number' />
                                 </section>
-                                <button className='button' onClick={handleSave}>
+                                <button className='button' onClick={handleDataSave}>
                                     Save design
                                 </button>
                             </div>
